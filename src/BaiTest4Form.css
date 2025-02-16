@@ -1,4 +1,3 @@
-/* BaiTest4Form.css */
 .Polaris-Layout__Section {
     margin-bottom: 16px;
   }
@@ -24,11 +23,11 @@
   }
   .icon-delete{
     position: absolute;
-    top: 8px; /* Cách từ trên cùng */
-    left: 8px; /* Cách từ bên trái */
+    top: 8px; 
+    left: 8px; 
     padding: 4px;
     background-color: transparent;
     border: none;
-    color: red; /* Màu cho icon, có thể thay đổi */
-    font-size: 16px; /* Kích thước icon */
+    color: red; 
+    font-size: 16px;
   }

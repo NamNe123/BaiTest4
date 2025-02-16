@@ -17,21 +17,17 @@ const VolumeDiscountForm = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
  
-  // Handle discount type change
+  
   const handleDiscountTypeChange = (value, index) => {
     setValue(`options[${index}].discountType`, value);
-    setValue(`options[${index}].amount`, ''); // Reset amount when changing discount type
+    setValue(`options[${index}].amount`, ''); 
   };
   const handleManageClick = (id) => {
-    // Xóa option dựa trên id
     setOptions(options.filter(option => option.id !== id));
     console.log('Manage button clicked');
   };
   const handleSelectChange = useCallback(
-    (selected: string, id: string) => {
-      // setSelected(selected)
-      //Nam lấy data ở đây rồi dùng ở đây tùy Nam nha
-      // cái handle để ra cái text amount á 
+    (selected: string, id: string) => {      
       console.log('selected', selected)
       console.log('id', id)
     },
@@ -45,7 +41,7 @@ const VolumeDiscountForm = () => {
       id: options.length + 1,
       title: '',
       subtitle: '',
-      quantity: maxQuantity + 1, // Increment based on the max quantity
+      quantity: maxQuantity + 1, 
       discountType: 'None',
       amount: '',
     };
@@ -60,15 +56,15 @@ const VolumeDiscountForm = () => {
     setOptions(options.filter(option => option.id !== id));
   };
   const handleOnInput = (name, value) => {
-    setValue(name, value);  // Cập nhật giá trị cho useForm
-    console.log('Form Data:', watch());  // In dữ liệu hiện tại của form
+    setValue(name, value);  
+    console.log('Form Data:', watch()); 
   };
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
-      style={{ height: "100vh", width: "100vw", padding: "20px", boxSizing: "border-box" }} // Chiếm toàn bộ màn hình
+      style={{ height: "100vh", width: "100vw", padding: "20px", boxSizing: "border-box" }} 
     >
       <Box width="80%" maxWidth="1200px" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
@@ -84,14 +80,14 @@ const VolumeDiscountForm = () => {
               <TextField
                 label="Campaign Name"
                 value={campaignName}
-                onChange={(value) => setCampaignName(value)} // Polaris chỉ truyền value
-                error={errors.campaignName ? "Campaign Name is required" : undefined} // Tránh lỗi khi error không tồn tại
+                onChange={(value) => setCampaignName(value)} 
+                error={errors.campaignName ? "Campaign Name is required" : undefined} 
                 required
               />
               <TextField
                 label="Title"
                 value={title}
-                onChange={(value) => setTitle(value)} // Polaris truyền value, không phải event
+                onChange={(value) => setTitle(value)} 
                 required
               />
               <TextField
@@ -191,7 +187,7 @@ const VolumeDiscountForm = () => {
                                             <Select
                                               label="Discount Type"
                                               options={optionsdiscountType}
-                                              onChange={(value) => field.onChange(value)}  // Cập nhật đúng chuẩn React Hook Form
+                                              onChange={(value) => field.onChange(value)}  
                                               value={field.value}
                                             />
                                           </Box>
@@ -201,14 +197,14 @@ const VolumeDiscountForm = () => {
                                       <Controller
                                         name={`options[${index}].amount`}
                                         control={control}
-                                        defaultValue={option.amount || ''}  // Khởi tạo giá trị ban đầu
+                                        defaultValue={option.amount || ''}  
                                         render={({ field }) => (
                                           <Box width="25%" minWidth="200px">
-                                            {watch(`options[${index}].discountType`) !== 'None' && (  // Kiểm tra khi discountType khác None
+                                            {watch(`options[${index}].discountType`) !== 'None' && (  
                                               <TextField
                                                 label="Amount"
                                                 type="number"
-                                                {...field}  // Liên kết trực tiếp với React Hook Form
+                                                {...field} 
                                                 onChange={(e) => {
                                                   field.onChange(e);
                                                   handleOnInput(`options[${index}].amount`, e);
@@ -244,12 +240,12 @@ const VolumeDiscountForm = () => {
 
           <Layout.Section variant="oneThird">
             <LegacyCard title="Preview" sectioned>
-              <Text alignment="center" fontWeight="bold">
-                Buy more and save
-              </Text>
-              <text>
-                Apply for all product in store
-              </text>
+            <Text alignment="center" fontWeight="bold">
+              {title ? title : "Buy more and save"}
+            </Text>
+            <Text>
+              {description ? description : "Apply for all products in store"}
+            </Text>
               <Card title={`Preview - Campaign: ${campaignName}`} sectioned>
               <DataTable
                 columnContentTypes={["text", "text", "numeric", "text"]}
