@@ -105,7 +105,7 @@ const VolumeDiscountForm = () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      style={{ height: "100vh", width: "100vw", padding: "20px", boxSizing: "border-box" }} 
+      style={{ height: "100vh", width: "80%", padding: "20px", boxSizing: "border-box" ,margin: "0 auto",}} 
     >
       <Box width="80%" maxWidth="1200px" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
@@ -140,10 +140,25 @@ const VolumeDiscountForm = () => {
             <LegacyCard title="Volume discount rule" sectioned>
               {options.map((option, index) => (
                 <LegacyCard 
-                title={`option ${option.id}`}
+                
+                title={
+                  <div style={{ 
+                    backgroundColor: "#ed4d2d", 
+                    padding: "4px", 
+                    borderRadius: "4px", 
+                    color: "white", 
+                    fontWeight: "bold" 
+                  }}>
+                    OPTION {option.id}
+                  </div>
+                }
                 actions={[
                   {
-                    content: <Icon source={DeleteIcon} />,
+                    content: (
+                      <span style={{ color: "black" }}>
+                        <Icon source={DeleteIcon} />
+                      </span>
+                    ),
                     onAction: () => handleManageClick(option.id), 
                   },
                 ]}
