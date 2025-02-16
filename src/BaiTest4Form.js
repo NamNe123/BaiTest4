@@ -47,6 +47,40 @@ const VolumeDiscountForm = () => {
     };
     setOptions([...options, newOption]);
   };
+  const Save = async () => {
+    if (!campaignName.trim()) {
+      alert("Campaign Name is required");
+      return;
+    }  
+    if (!title.trim()) {
+      alert("Title is required");
+      return;
+    }
+    if (options.length === 0) {
+      alert("At least one rule (option) is required");
+      return;
+    }
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          campaignName,
+          title,
+          description,
+          options,
+        }),
+      });  
+      const data = await response.json();
+      console.log("API Response:", data);
+      alert("Saved successfully!");
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Failed to save. Please try again.");
+    }
+  };
   const optionsdiscountType = [
     { label: 'None', value: 'None' },
     { label: '% discount', value: '% discount' },
@@ -58,6 +92,13 @@ const VolumeDiscountForm = () => {
   const handleOnInput = (name, value) => {
     setValue(name, value);  
     console.log('Form Data:', watch()); 
+  };
+  const handleOptionChange = (index, field, value) => {
+    setOptions((prevOptions) => {
+      const newOptions = [...prevOptions];
+      newOptions[index] = { ...newOptions[index], [field]: value };
+      return newOptions;
+    });
   };
   return (
     <Box
@@ -120,12 +161,13 @@ const VolumeDiscountForm = () => {
                                             control={control}
                                             defaultValue={option.title}
                                             render={({ field }) => (
+                                              
                                               <TextField
-                                                label="Title"
-                                                {...field}
-                                                error={errors.options && errors.options[index] && errors.options[index].title ? 'Title is required' : ''}
-                                                required
-                                              />
+                                                  label="Title"
+                                                  value={option.title}
+                                                  onChange={(value) => handleOptionChange(index, "title", value)}
+                                                  required
+                                                />                                              
                                             )}
                                           />
                                         </div>
@@ -170,10 +212,10 @@ const VolumeDiscountForm = () => {
                                             <TextField
                                               label="Quantity"
                                               type="number"
-                                              {...field}
-                                              error={errors.options && errors.options[index] && errors.options[index].quantity ? 'Quantity must be a number' : ''}
+                                              value={option.quantity}
+                                              onChange={(value) => handleOptionChange(index, "quantity", value)}
                                               required
-                                            />
+                                            />                                            
                                           )}
                                         />
                                       </Box>
@@ -187,7 +229,10 @@ const VolumeDiscountForm = () => {
                                             <Select
                                               label="Discount Type"
                                               options={optionsdiscountType}
-                                              onChange={(value) => field.onChange(value)}  
+                                              onChange={(value) => {
+                                                field.onChange(value);
+                                                handleOptionChange(index, "discountType", value);
+                                              }}
                                               value={field.value}
                                             />
                                           </Box>
@@ -208,6 +253,7 @@ const VolumeDiscountForm = () => {
                                                 onChange={(e) => {
                                                   field.onChange(e);
                                                   handleOnInput(`options[${index}].amount`, e);
+                                                  handleOptionChange(index, "amount", e)
                                                 }}
                                                 error={errors.options?.[index]?.amount ? 'Amount is required' : ''}
                                                 required
@@ -261,7 +307,7 @@ const VolumeDiscountForm = () => {
                 defaultSortDirection="ascending"
                 initialSortColumnIndex={0}
               />
-              <Button primary variant='primary' onClick={addOption} >
+              <Button primary variant='primary' onClick={Save} >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span >save</span>
                 </div>
